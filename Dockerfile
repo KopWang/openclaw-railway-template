@@ -103,6 +103,8 @@ RUN printf '%s\n' '#!/usr/bin/env bash' 'exec node /openclaw/dist/entry.js "$@"'
 
 COPY src ./src
 COPY entrypoint.sh ./entrypoint.sh
+COPY scripts ./scripts
+RUN chmod +x ./scripts/provider-bootstrap.sh
 RUN chmod +x ./entrypoint.sh
 
 # Create openclaw user, set up directories, install Homebrew as that user
