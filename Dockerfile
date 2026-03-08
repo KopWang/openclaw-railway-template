@@ -70,7 +70,14 @@ RUN pnpm install --no-frozen-lockfile
 RUN pnpm build
 ENV OPENCLAW_PREFER_PNPM=1
 RUN pnpm ui:install && pnpm ui:build
-
+# Bake in Aiberm provider plugin at a pinned commit (Release v0.3.3)
+ARG AIBERM_PLUGIN_REF=da2c750
+RUN git clone https://github.com/aiberm/openclaw-aiberm.git /tmp/openclaw-aiberm \
+ && cd /tmp/openclaw-aiberm \
+ && git checkout "${AIBERM_PLUGIN_REF}" \
+ && mkdir -p /openclaw/extensions/openclaw-aiberm \
+ && cp -R index.ts src openclaw.plugin.json package.json README.md README_EN.md /openclaw/extensions/openclaw-aiberm/ \
+ && rm -rf /tmp/openclaw-aiberm
 
 # Runtime image
 FROM node:22-bookworm
